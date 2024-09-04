@@ -1,7 +1,10 @@
 [package]
-name = "{{project-name}}"
-version = "0.1.0"
+name = "sja"
+authors = ["Weiberle17"]
+version = "0.1.0-alpha"
+description = "SJA webapp"
 edition = "2021"
+license = "MIT"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -9,10 +12,10 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 axum = { version = "0.7", optional = true }
 console_error_panic_hook = "0.1"
-leptos = { version = "0.6"{% if nightly == "Yes" %}, features = ["nightly"]{% endif %} }
-leptos_axum = { version = "0.6", optional = true }
-leptos_meta = { version = "0.6"{% if nightly == "Yes" %}, features = ["nightly"]{% endif %} }
-leptos_router = { version = "0.6"{% if nightly == "Yes" %}, features = ["nightly"]{% endif %} }
+leptos = { version = "0.7.0-beta", features = ["nightly", "experimental-islands"] }
+leptos_axum = { version = "0.7.0-beta", optional = true }
+leptos_meta = { version = "0.7.0-beta" }
+leptos_router = { version = "0.7.0-beta", features = ["nightly"] }
 tokio = { version = "1", features = ["rt-multi-thread"], optional = true }
 tower = { version = "0.4", optional = true }
 tower-http = { version = "0.5", features = ["fs"], optional = true }
@@ -20,9 +23,11 @@ wasm-bindgen = "=0.2.93"
 thiserror = "1"
 tracing = { version = "0.1", optional = true }
 http = "1"
+serde = { version = "1", features = ["derive"] }
 
 [features]
-hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
+default = ["leptos/hydrate", "leptos/ssr"]
+hydrate = ["leptos/hydrate"]
 ssr = [
     "dep:axum",
     "dep:tokio",
@@ -45,7 +50,7 @@ panic = "abort"
 
 [package.metadata.leptos]
 # The name used by wasm-bindgen/cargo-leptos for the JS/WASM bundle. Defaults to the crate name
-output-name = "{{project-name}}"
+output-name = "leptos_test"
 
 # The site root folder is where cargo-leptos generate all output. WARNING: all content of this folder will be erased on a rebuild. Use it in your server setup.
 site-root = "target/site"

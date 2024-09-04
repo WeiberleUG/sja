@@ -1,10 +1,9 @@
 use crate::app::App;
-use axum::response::Response as AxumResponse;
 use axum::{
     body::Body,
     extract::State,
     http::{Request, Response, StatusCode},
-    response::IntoResponse,
+    response::{IntoResponse, Response as AxumResponse},
 };
 use leptos::*;
 use tower::ServiceExt;
@@ -43,8 +42,6 @@ async fn get_static_file(
     request: Request<Body>,
     root: &str,
 ) -> Result<Response<Body>, (StatusCode, String)> {
-    // `ServeDir` implements `tower::Service` so we can call it with `tower::ServiceExt::oneshot`
-    // This path is relative to the cargo root
     match ServeDir::new(root)
         .precompressed_gzip()
         .precompressed_br()
