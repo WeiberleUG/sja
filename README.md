@@ -1,5 +1,5 @@
-[![Build Rust project](https://github.com/Vaengir-Projects/rigit/actions/workflows/compile.yml/badge.svg)](https://github.com/Vaengir-Projects/rigit/actions/workflows/compile.yml)
-[![Dependency status](https://deps.rs/repo/github/Vaengir-Projects/rigit/status.svg)](https://deps.rs/repo/github/Vaengir-Projects/rigit)
+[![Build Rust project](https://github.com/Weiberle17/sja/actions/workflows/compile.yml/badge.svg)](https://github.com/Weiberle17/sja/actions/workflows/compile.yml)
+[![Dependency status](https://deps.rs/repo/github/Weiberle17/sja/status.svg)](https://deps.rs/repo/github/Weiberle17/sja)
 
 # SJA Webapp
 
