@@ -26,6 +26,7 @@ http = "1"
 serde = { version = "1", features = ["derive"] }
 
 [features]
+# Default values are set so the editor knows which features are supposed to be used
 default = ["leptos/hydrate", "leptos/ssr"]
 hydrate = ["leptos/hydrate"]
 ssr = [
@@ -50,7 +51,7 @@ panic = "abort"
 
 [package.metadata.leptos]
 # The name used by wasm-bindgen/cargo-leptos for the JS/WASM bundle. Defaults to the crate name
-output-name = "leptos_test"
+output-name = "sja"
 
 # The site root folder is where cargo-leptos generate all output. WARNING: all content of this folder will be erased on a rebuild. Use it in your server setup.
 site-root = "target/site"
