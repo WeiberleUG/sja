@@ -131,7 +131,7 @@ dependencies = [
  "serde_urlencoded",
  "sync_wrapper 1.0.1",
  "tokio",
- "tower",
+ "tower 0.4.13",
  "tower-layer",
  "tower-service",
  "tracing",
@@ -802,7 +802,7 @@ dependencies = [
  "serde_json",
  "server_fn",
  "tokio",
- "tower",
+ "tower 0.4.13",
  "tower-http",
 ]
 
@@ -1578,7 +1578,7 @@ dependencies = [
  "server_fn_macro_default",
  "thiserror",
  "throw_error",
- "tower",
+ "tower 0.4.13",
  "tower-layer",
  "url",
  "wasm-bindgen",
@@ -1620,7 +1620,7 @@ checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 
 [[package]]
 name = "sja"
-version = "0.1.0-alpha"
+version = "0.1.0-beta"
 dependencies = [
  "axum",
  "console_error_panic_hook",
@@ -1632,7 +1632,7 @@ dependencies = [
  "serde",
  "thiserror",
  "tokio",
- "tower",
+ "tower 0.5.0",
  "tower-http",
  "tracing",
  "wasm-bindgen",
@@ -1877,6 +1877,16 @@ dependencies = [
  "tower-layer",
  "tower-service",
  "tracing",
+]
+
+[[package]]
+name = "tower"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "36b837f86b25d7c0d7988f00a54e74739be6477f2aac6201b8f429a7569991b7"
+dependencies = [
+ "tower-layer",
+ "tower-service",
 ]
 
 [[package]]
