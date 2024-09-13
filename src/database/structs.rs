@@ -1,16 +1,16 @@
-#[cfg(feature = "ssr")]
+#[cfg(not(feature = "ssr"))]
+use chrono::{DateTime, Local};
 use serde::{Deserialize, Serialize};
 #[cfg(feature = "ssr")]
-use sqlx::{
-    prelude::FromRow,
-    types::{
-        chrono::{DateTime, Local},
-        Uuid,
-    },
+use sqlx::types::{
+    chrono::{DateTime, Local},
+    Uuid,
 };
+#[cfg(not(feature = "ssr"))]
+use uuid::Uuid;
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Adresse {
     pub adresse_id: Uuid,
     pub plz: String,
@@ -19,15 +19,15 @@ pub struct Adresse {
     pub stadtteil: String,
 }
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Organisation {
     pub organisation_id: Uuid,
     pub organisation_name: String,
 }
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct JsonOrganisation {
     pub organisation: Organisation,
     pub adressen: Vec<Adresse>,
@@ -36,15 +36,15 @@ pub struct JsonOrganisation {
     pub angebote: Vec<Angebot>,
 }
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Email {
     pub email_id: Uuid,
     pub email_address: String,
 }
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Telefonnummer {
     pub telefonnummer_id: Uuid,
     pub land_vorwahl: String,
@@ -53,15 +53,15 @@ pub struct Telefonnummer {
     pub komplette_nummer: String,
 }
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Link {
     pub link_id: Uuid,
     pub link: String,
 }
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Angebot {
     pub angebot_id: Uuid,
     pub angebot_name: String,
@@ -72,8 +72,8 @@ pub struct Angebot {
     pub last_modified: DateTime<Local>,
 }
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct JsonAngebot {
     pub angebot: Angebot,
     pub organisation: JsonOrganisation,
@@ -83,24 +83,24 @@ pub struct JsonAngebot {
     pub sonstiges: Vec<Sonstiges>,
 }
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Sonstiges {
     pub sonstiges_id: Uuid,
     pub text: String,
     pub angebot_id: Uuid,
 }
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Ansprechpartner {
     pub ansprechpartner_id: Uuid,
     pub nach_name: String,
     pub vor_name: String,
 }
 
-#[cfg(feature = "ssr")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct JsonAnsprechpartner {
     pub ansprechpartner: Ansprechpartner,
     pub emails: Vec<Email>,

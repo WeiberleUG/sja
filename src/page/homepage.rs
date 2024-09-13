@@ -1,10 +1,10 @@
-use crate::components::header::Header;
+use crate::components::{header::HomeHeader, offer_table::OfferTable};
 use leptos::prelude::*;
 
-/// Renders the home page of your application.
 #[component]
 pub fn HomePage() -> impl IntoView {
     view! {
-        <Header/>
+        <HomeHeader />
+        <OfferTable />
     }
 }

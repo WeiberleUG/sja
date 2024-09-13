@@ -1,14 +1,14 @@
-use crate::page::homepage;
+use crate::page::{homepage, new, outdated};
 use leptos::prelude::*;
 use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
 use leptos_router::{
     components::{Route, Router, Routes},
-    StaticSegment,
+    SsrMode, StaticSegment,
 };
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
     view! {
-        <!DOCTYPE html>
+        <!DOCTYPE html> 
         <html lang="en">
             <head>
                 <meta charset="utf-8" />
@@ -26,20 +26,21 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
 
 #[component]
 pub fn App() -> impl IntoView {
-    // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
 
     view! {
-        <Stylesheet id="leptos" href="/pkg/sja.css" />
-
-        // sets the document title
-        <Title text="Welcome to Leptos" />
-
-        // content for this welcome page
+        <Stylesheet id="sja" href="/pkg/sja.css" />
+        <Title text="SJA" />
         <Router>
             <main>
                 <Routes fallback=|| "Page not found.".into_view()>
-                    <Route path=StaticSegment("") view=homepage::HomePage />
+                    <Route path=StaticSegment("/") view=homepage::HomePage ssr=SsrMode::Async />
+                    <Route
+                        path=StaticSegment("/outdated")
+                        view=outdated::OutdatedPage
+                        ssr=SsrMode::Async
+                    />
+                    <Route path=StaticSegment("/new") view=new::NewPage ssr=SsrMode::Async />
                 </Routes>
             </main>
         </Router>

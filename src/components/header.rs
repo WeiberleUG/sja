@@ -1,7 +1,8 @@
 use leptos::prelude::*;
+use leptos_router::components::A;
 
 #[component]
-pub fn Header() -> impl IntoView {
+pub fn HomeHeader() -> impl IntoView {
     provide_context(RwSignal::new(false));
 
     view! {
@@ -9,17 +10,20 @@ pub fn Header() -> impl IntoView {
             <div class="header-div-2">
                 <div class="header-div-3">
                     <div class="header-div-4">
-                        <a href="/">
+                        <A href="/">
                             <img src="/images/sja_big.png" class="home-image" alt="Home" />
-                        </a>
+                        </A>
                         <ShowWhenOpen is=false>
                             <div class="header-div-5">
                                 <div class="header-div-6">
-                                    <a href="/angebote" class="link-open">
+                                    <a href="/" class="link-selected">
                                         "Angebote"
                                     </a>
-                                    <a href="/outdatet" class="link-open">
+                                    <a href="/outdated" class="link-open">
                                         "Abgelaufen"
+                                    </a>
+                                    <a href="/new" class="link-open">
+                                        "Neu"
                                     </a>
                                 </div>
                             </div>
@@ -40,11 +44,138 @@ pub fn Header() -> impl IntoView {
                     <ShowWhenOpen is=true>
                         <div class="header-div-8">
                             <div class="header-div-9">
-                                <a href="/angebote" class="link-open">
+                                <a href="/" class="link-selected">
                                     "Angebote"
                                 </a>
-                                <a href="/outdatet" class="link-open">
+                                <a href="/outdated" class="link-open">
                                     "Abgelaufen"
+                                </a>
+                                <a href="/new" class="link-open">
+                                    "Neu"
+                                </a>
+                            </div>
+                        </div>
+                    </ShowWhenOpen>
+                    <h1>"Stiftung Jugendhilfe Aktiv"</h1>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+#[component]
+pub fn OutdatedHeader() -> impl IntoView {
+    provide_context(RwSignal::new(false));
+
+    view! {
+        <div class="header-div-1">
+            <div class="header-div-2">
+                <div class="header-div-3">
+                    <div class="header-div-4">
+                        <a href="/">
+                            <img src="/images/sja_big.png" class="home-image" alt="Home" />
+                        </a>
+                        <ShowWhenOpen is=false>
+                            <div class="header-div-5">
+                                <div class="header-div-6">
+                                    <a href="/" class="link-open">
+                                        "Angebote"
+                                    </a>
+                                    <a href="/outdated" class="link-selected">
+                                        "Abgelaufen"
+                                    </a>
+                                    <a href="/new" class="link-open">
+                                        "Neu"
+                                    </a>
+                                </div>
+                            </div>
+                        </ShowWhenOpen>
+                        <div>
+                            <div class="header-div-7">
+                                <a href="https://github.com/Weiberle17/sja">
+                                    <img
+                                        class="header-img"
+                                        src="/images/github-mark.svg"
+                                        alt="GitHub"
+                                    />
+                                </a>
+                                <HamburgerMenuToggle />
+                            </div>
+                        </div>
+                    </div>
+                    <ShowWhenOpen is=true>
+                        <div class="header-div-8">
+                            <div class="header-div-9">
+                                <a href="/" class="link-open">
+                                    "Angebote"
+                                </a>
+                                <a href="/outdated" class="link-selected">
+                                    "Abgelaufen"
+                                </a>
+                                <a href="/new" class="link-open">
+                                    "Neu"
+                                </a>
+                            </div>
+                        </div>
+                    </ShowWhenOpen>
+                    <h1>"Stiftung Jugendhilfe Aktiv"</h1>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+#[component]
+pub fn NewHeader() -> impl IntoView {
+    provide_context(RwSignal::new(false));
+
+    view! {
+        <div class="header-div-1">
+            <div class="header-div-2">
+                <div class="header-div-3">
+                    <div class="header-div-4">
+                        <a href="/">
+                            <img src="/images/sja_big.png" class="home-image" alt="Home" />
+                        </a>
+                        <ShowWhenOpen is=false>
+                            <div class="header-div-5">
+                                <div class="header-div-6">
+                                    <a href="/" class="link-open">
+                                        "Angebote"
+                                    </a>
+                                    <a href="/outdated" class="link-open">
+                                        "Abgelaufen"
+                                    </a>
+                                    <a href="/new" class="link-selected">
+                                        "Neu"
+                                    </a>
+                                </div>
+                            </div>
+                        </ShowWhenOpen>
+                        <div>
+                            <div class="header-div-7">
+                                <a href="https://github.com/Weiberle17/sja">
+                                    <img
+                                        class="header-img"
+                                        src="/images/github-mark.svg"
+                                        alt="GitHub"
+                                    />
+                                </a>
+                                <HamburgerMenuToggle />
+                            </div>
+                        </div>
+                    </div>
+                    <ShowWhenOpen is=true>
+                        <div class="header-div-8">
+                            <div class="header-div-9">
+                                <a href="/" class="link-open">
+                                    "Angebote"
+                                </a>
+                                <a href="/outdated" class="link-open">
+                                    "Abgelaufen"
+                                </a>
+                                <a href="/new" class="link-selected">
+                                    "Neu"
                                 </a>
                             </div>
                         </div>
