@@ -1,6 +1,7 @@
 use self::prelude::ServerFnError;
 use crate::database::structs::{
-    Adresse, Angebot, Ansprechpartner, JsonAngebot, JsonOrganisation, Link, Organisation, Sonstiges,
+    Adresse, Angebot, Ansprechpartner, Email, JsonAngebot, JsonAnsprechpartner, JsonOrganisation,
+    Link, Organisation, Sonstiges, Telefonnummer,
 };
 use cfg_if::cfg_if;
 use leptos::*;
@@ -140,9 +141,9 @@ async fn select_links_for_angebot(angebot_id: Uuid) -> Result<Vec<Link>, ServerF
 #[server]
 async fn select_apartner_for_angebot(
     angebot_id: Uuid,
-) -> Result<Vec<Ansprechpartner>, ServerFnError> {
+) -> Result<Vec<JsonAnsprechpartner>, ServerFnError> {
     let pool = db().await?;
-    sqlx::query_as!(
+    let apartners = sqlx::query_as!(
         Ansprechpartner,
         r#"
         SELECT
@@ -155,8 +156,22 @@ async fn select_apartner_for_angebot(
         angebot_id
     )
     .fetch_all(&pool)
-    .await
-    .map_err(|e| ServerFnError::Response(e.to_string()))
+    .await?;
+
+    let mut json_apartner: Vec<JsonAnsprechpartner> = Vec::new();
+    for apartner in apartners {
+        let emails = select_emails_for_apartner(apartner.ansprechpartner_id).await?;
+        let telefonnummern =
+            select_telefonnummern_for_apartner(apartner.ansprechpartner_id).await?;
+
+        json_apartner.push(JsonAnsprechpartner {
+            ansprechpartner: apartner,
+            emails,
+            telefonnummern,
+        });
+    }
+
+    Ok(json_apartner)
 }
 
 #[server]
@@ -259,6 +274,48 @@ async fn select_angebote_for_organisation(
         WHERE
           angebot.organisation_id = $1;"#,
         organisation_id
+    )
+    .fetch_all(&pool)
+    .await
+    .map_err(|e| ServerFnError::Response(e.to_string()))
+}
+
+#[server]
+async fn select_emails_for_apartner(ansprechpartner_id: Uuid) -> Result<Vec<Email>, ServerFnError> {
+    let pool = db().await?;
+    sqlx::query_as!(
+        Email,
+        r#"
+        SELECT
+          email.*
+        FROM
+          email
+          JOIN apartner_email ON apartner_email.email_id = email.email_id
+        WHERE
+            apartner_email.ansprechpartner_id = $1;"#,
+        ansprechpartner_id
+    )
+    .fetch_all(&pool)
+    .await
+    .map_err(|e| ServerFnError::Response(e.to_string()))
+}
+
+#[server]
+async fn select_telefonnummern_for_apartner(
+    ansprechpartner_id: Uuid,
+) -> Result<Vec<Telefonnummer>, ServerFnError> {
+    let pool = db().await?;
+    sqlx::query_as!(
+        Telefonnummer,
+        r#"
+        SELECT
+          telefonnummer.*
+        FROM
+          telefonnummer
+          JOIN apartner_tnummer ON apartner_tnummer.telefonnummer_id = telefonnummer.telefonnummer_id
+        WHERE
+          apartner_tnummer.ansprechpartner_id = $1;"#,
+        ansprechpartner_id
     )
     .fetch_all(&pool)
     .await

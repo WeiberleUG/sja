@@ -1,9 +1,22 @@
-use crate::database::{services, structs::JsonAngebot};
+use crate::{
+    components::show_offers::ShowOffers,
+    database::{services, structs::JsonAngebot},
+};
 use leptos::prelude::*;
 
+#[derive(Debug)]
+pub enum SelectedPage {
+    Default,
+    Outdated,
+}
+
 #[component]
-pub fn OfferTable() -> impl IntoView {
-    let offers = Resource::new(|| (), move |_| services::get_offers());
+pub fn OfferTable(selected: SelectedPage) -> impl IntoView {
+    let offers = match selected {
+        SelectedPage::Default => Resource::new(|| (), move |_| services::get_offers()),
+        //  TODO: make get_outdated <2024-09-14>
+        SelectedPage::Outdated => Resource::new(|| (), move |_| services::get_offers()),
+    };
 
     view! {
         <Suspense fallback=move || {
@@ -24,19 +37,8 @@ pub fn OfferTable() -> impl IntoView {
                         Err(ServerFnError::ServerError("Data not loaded yet".to_string()))
                     }
                 };
-                view! { <ShowData offers /> }
+                view! { <ShowOffers offers /> }
             }}
         </Suspense>
-    }
-}
-
-#[component]
-pub fn ShowData(offers: Result<Vec<JsonAngebot>, ServerFnError>) -> impl IntoView {
-    let data = offers.unwrap_or_default();
-
-    view! {
-        <ul>
-            {data.into_iter().map(|n| view! { <li>{n.angebot.angebot_name}</li> }).collect_view()}
-        </ul>
     }
 }

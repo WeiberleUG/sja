@@ -185,3 +185,14 @@ button {
     display: none;
   }
 }
+
+//  TODO: Style table <2024-09-14>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  white-space: nowrap;
+}

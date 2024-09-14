@@ -50,7 +50,7 @@ pub struct Telefonnummer {
     pub land_vorwahl: String,
     pub lokale_nummer: String,
     pub festnetz: bool,
-    pub komplette_nummer: String,
+    pub komplette_nummer: Option<String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -79,7 +79,7 @@ pub struct JsonAngebot {
     pub organisation: JsonOrganisation,
     pub adressen: Vec<Adresse>,
     pub links: Vec<Link>,
-    pub apartner: Vec<Ansprechpartner>,
+    pub apartner: Vec<JsonAnsprechpartner>,
     pub sonstiges: Vec<Sonstiges>,
 }
 
