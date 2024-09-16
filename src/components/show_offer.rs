@@ -1,5 +1,6 @@
 use crate::database::structs::JsonAngebot;
 use leptos::prelude::*;
+use leptos_router::components::A;
 
 #[component]
 pub fn ShowOffer(offer: JsonAngebot) -> impl IntoView {
@@ -75,8 +76,11 @@ pub fn ShowOffer(offer: JsonAngebot) -> impl IntoView {
                         ap.emails
                             .into_iter()
                             .map(|em| {
+                                let email = em.email_address.clone();
                                 view! {
-                                    {em.email_address}
+                                    <A href=move || format!("mailto:{}", email)>
+                                        {em.email_address.clone()}
+                                    </A>
                                     <br />
                                 }
                             })
