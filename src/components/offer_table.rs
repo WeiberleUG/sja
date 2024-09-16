@@ -1,7 +1,4 @@
-use crate::{
-    components::show_offers::ShowOffers,
-    database::{services, structs::JsonAngebot},
-};
+use crate::{components::show_offer::ShowOffer, database::structs::JsonAngebot};
 use leptos::prelude::*;
 
 #[derive(Debug)]
@@ -11,34 +8,41 @@ pub enum SelectedPage {
 }
 
 #[component]
-pub fn OfferTable(selected: SelectedPage) -> impl IntoView {
-    let offers = match selected {
-        SelectedPage::Default => Resource::new(|| (), move |_| services::get_offers()),
-        //  TODO: make get_outdated <2024-09-14>
-        SelectedPage::Outdated => Resource::new(|| (), move |_| services::get_offers()),
+pub fn OfferTable(offers: Resource<Result<Vec<JsonAngebot>, ServerFnError>>) -> impl IntoView {
+    let offer_view = move || {
+        offers.with(move |x| {
+            x.clone().map(move |res| {
+                view! {
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Name</th>
+                                <th>Link</th>
+                                <th>Beschreibung</th>
+                                <th>Adresse</th>
+                                <th>Stadtteil</th>
+                                <th>Ansprechpartner</th>
+                                <th>Email</th>
+                                <th>Telefonnummer</th>
+                                <th>Sonstiges</th>
+                            </tr>
+                            <For
+                                each=move || res.clone().unwrap_or_default().into_iter().enumerate()
+                                key=|(i, _)| *i
+                                children=move |(_, offer): (usize, JsonAngebot)| {
+                                    view! { <ShowOffer offer /> }
+                                }
+                            />
+                        </tbody>
+                    </table>
+                }
+            })
+        })
     };
 
     view! {
         <Suspense fallback=move || {
             view! { <p>"Loading..."</p> }
-        }>
-            {move || {
-                let offers: Result<Vec<JsonAngebot>, ServerFnError> = match offers.get() {
-                    Some(Ok(offers)) => {
-                        log::info!("Successfully got: {:?}", offers);
-                        Ok(offers)
-                    }
-                    Some(Err(err)) => {
-                        log::error!("{:?}", err);
-                        Err(err)
-                    }
-                    None => {
-                        log::error!("No message received");
-                        Err(ServerFnError::ServerError("Data not loaded yet".to_string()))
-                    }
-                };
-                view! { <ShowOffers offers /> }
-            }}
-        </Suspense>
+        }>{offer_view}</Suspense>
     }
 }
