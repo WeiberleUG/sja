@@ -1,5 +1,5 @@
 use crate::components::{
-    header::HomeHeader,
+    header::Header,
     offer_table::{OfferTable, SelectedPage},
 };
 use leptos::prelude::*;
@@ -7,7 +7,7 @@ use leptos::prelude::*;
 #[component]
 pub fn HomePage() -> impl IntoView {
     view! {
-        <HomeHeader />
+        <Header />
         <OfferTable selected=SelectedPage::Default />
     }
 }

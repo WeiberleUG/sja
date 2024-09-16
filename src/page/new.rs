@@ -1,7 +1,7 @@
-use crate::components::header::NewHeader;
+use crate::components::header::Header;
 use leptos::prelude::*;
 
 #[component]
 pub fn NewPage() -> impl IntoView {
-    view! { <NewHeader /> }
+    view! { <Header /> }
 }

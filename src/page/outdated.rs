@@ -1,5 +1,5 @@
 use crate::components::{
-    header::OutdatedHeader,
+    header::Header,
     offer_table::{OfferTable, SelectedPage},
 };
 use leptos::prelude::*;
@@ -7,7 +7,7 @@ use leptos::prelude::*;
 #[component]
 pub fn OutdatedPage() -> impl IntoView {
     view! {
-        <OutdatedHeader />
+        <Header />
         <OfferTable selected=SelectedPage::Outdated />
     }
 }
