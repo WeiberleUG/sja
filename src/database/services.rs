@@ -30,7 +30,7 @@ cfg_if! {
     }
 }
 
-#[server(GetOffers)]
+#[server(GetOffers, "/api")]
 pub async fn get_offers() -> Result<Vec<JsonAngebot>, ServerFnError> {
     let pool = db().await?;
     let angebote = sqlx::query_as!(
@@ -39,7 +39,46 @@ pub async fn get_offers() -> Result<Vec<JsonAngebot>, ServerFnError> {
         SELECT
           *
         FROM
-          angebot;"#
+          angebot
+        WHERE
+          last_modified > NOW() - INTERVAL '3 months';"#
+    )
+    .fetch_all(&pool)
+    .await?;
+
+    let mut json_angebote: Vec<JsonAngebot> = Vec::new();
+    for angebot in angebote {
+        let organisation = select_organisation_for_angebot(angebot.organisation_id).await?;
+        let adressen = select_adressen_for_angebot(angebot.angebot_id).await?;
+        let links = select_links_for_angebot(angebot.angebot_id).await?;
+        let apartner = select_apartner_for_angebot(angebot.angebot_id).await?;
+        let sonstiges = select_sonstiges_for_angebot(angebot.angebot_id).await?;
+
+        json_angebote.push(JsonAngebot {
+            angebot,
+            organisation,
+            adressen,
+            links,
+            apartner,
+            sonstiges,
+        })
+    }
+
+    Ok(json_angebote)
+}
+
+#[server(GetOutdated, "/api")]
+pub async fn get_outdated() -> Result<Vec<JsonAngebot>, ServerFnError> {
+    let pool = db().await?;
+    let angebote = sqlx::query_as!(
+        Angebot,
+        r#"
+        SELECT
+          *
+        FROM
+          angebot
+        WHERE
+          last_modified < NOW() - INTERVAL '3 months';"#
     )
     .fetch_all(&pool)
     .await?;

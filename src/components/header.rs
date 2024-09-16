@@ -35,9 +35,7 @@ pub fn Header() -> impl IntoView {
                         </A>
                         <ShowWhenOpen is=false>
                             <div class="header-div-5">
-                                <div class="header-div-6">
-                                    {link_view}
-                                </div>
+                                <div class="header-div-6">{link_view}</div>
                             </div>
                         </ShowWhenOpen>
                         <div>
@@ -55,9 +53,7 @@ pub fn Header() -> impl IntoView {
                     </div>
                     <ShowWhenOpen is=true>
                         <div class="header-div-8">
-                            <div class="header-div-9">
-                                {link_view}
-                            </div>
+                            <div class="header-div-9">{link_view}</div>
                         </div>
                     </ShowWhenOpen>
                     <h1>"Stiftung Jugendhilfe Aktiv"</h1>
