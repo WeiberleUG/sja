@@ -1,26 +1,42 @@
 use leptos::prelude::*;
+use leptos_router::components::A;
 
 #[component]
 pub fn Header() -> impl IntoView {
     provide_context(RwSignal::new(false));
+    let links = RwSignal::new(vec![
+        ("".to_string(), "Angebote".to_string()),
+        ("outdated".to_string(), "Abgelaufen".to_string()),
+        ("new".to_string(), "Neu".to_string()),
+    ]);
+    let link_view = move || {
+        view! {
+            <For
+                each=move || links.get().clone().into_iter().enumerate()
+                key=|(i, _)| *i
+                children=move |(_, (href, link)): (usize, (String, String))| {
+                    view! {
+                        <A href=move || format!("/{}", href.clone()) {..} class="link-open">
+                            {link}
+                        </A>
+                    }
+                }
+            />
+        }
+    };
 
     view! {
         <div class="header-div-1">
             <div class="header-div-2">
                 <div class="header-div-3">
                     <div class="header-div-4">
-                        <a href="/">
+                        <A href="/">
                             <img src="/images/sja_big.png" class="home-image" alt="Home" />
-                        </a>
+                        </A>
                         <ShowWhenOpen is=false>
                             <div class="header-div-5">
                                 <div class="header-div-6">
-                                    <a href="/angebote" class="link-open">
-                                        "Angebote"
-                                    </a>
-                                    <a href="/outdatet" class="link-open">
-                                        "Abgelaufen"
-                                    </a>
+                                    {link_view}
                                 </div>
                             </div>
                         </ShowWhenOpen>
@@ -40,12 +56,7 @@ pub fn Header() -> impl IntoView {
                     <ShowWhenOpen is=true>
                         <div class="header-div-8">
                             <div class="header-div-9">
-                                <a href="/angebote" class="link-open">
-                                    "Angebote"
-                                </a>
-                                <a href="/outdatet" class="link-open">
-                                    "Abgelaufen"
-                                </a>
+                                {link_view}
                             </div>
                         </div>
                     </ShowWhenOpen>

@@ -5,9 +5,9 @@ use crate::components::{
 use leptos::prelude::*;
 
 #[component]
-pub fn HomePage() -> impl IntoView {
+pub fn OutdatedPage() -> impl IntoView {
     view! {
         <Header />
-        <OfferTable selected=SelectedPage::Default />
+        <OfferTable selected=SelectedPage::Outdated />
     }
 }
