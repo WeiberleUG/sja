@@ -13,28 +13,32 @@ pub fn OfferTable(offers: Resource<Result<Vec<JsonAngebot>, ServerFnError>>) -> 
         offers.with(move |x| {
             x.clone().map(move |res| {
                 view! {
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>Name</th>
-                                <th>Link</th>
-                                <th>Beschreibung</th>
-                                <th>Adresse</th>
-                                <th>Stadtteil</th>
-                                <th>Ansprechpartner</th>
-                                <th>Email</th>
-                                <th>Telefonnummer</th>
-                                <th>Sonstiges</th>
-                            </tr>
-                            <For
-                                each=move || res.clone().unwrap_or_default().into_iter().enumerate()
-                                key=|(i, _)| *i
-                                children=move |(_, offer): (usize, JsonAngebot)| {
-                                    view! { <ShowOffer offer /> }
-                                }
-                            />
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Link</th>
+                                    <th>Beschreibung</th>
+                                    <th>Adresse</th>
+                                    <th>Stadtteil</th>
+                                    <th>Ansprechpartner</th>
+                                    <th>Email</th>
+                                    <th>Telefonnummer</th>
+                                    <th>Sonstiges</th>
+                                </tr>
+                                <For
+                                    each=move || {
+                                        res.clone().unwrap_or_default().into_iter().enumerate()
+                                    }
+                                    key=|(i, _)| *i
+                                    children=move |(_, offer): (usize, JsonAngebot)| {
+                                        view! { <ShowOffer offer /> }
+                                    }
+                                />
+                            </tbody>
+                        </table>
+                    </div>
                 }
             })
         })
