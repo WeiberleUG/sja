@@ -33,11 +33,11 @@ pub fn Header() -> impl IntoView {
                         <A href="/">
                             <img src="/images/sja_big.png" class="home-image" alt="Home" />
                         </A>
-                        <ShowWhenOpen is=false>
+                        // <ShowWhenOpen is=false>
                             <div class="header-div-5">
                                 <div class="header-div-6">{link_view}</div>
                             </div>
-                        </ShowWhenOpen>
+                        // </ShowWhenOpen>
                         <div>
                             <div class="header-div-7">
                                 <A href="https://github.com/Weiberle17/sja">
@@ -51,11 +51,11 @@ pub fn Header() -> impl IntoView {
                             </div>
                         </div>
                     </div>
-                    <ShowWhenOpen is=true>
-                        <div class="header-div-8">
-                            <div class="header-div-9">{link_view}</div>
-                        </div>
-                    </ShowWhenOpen>
+                    // <ShowWhenOpen is=true>
+                    //     <div class="header-div-8">
+                    //         <div class="header-div-9">{link_view}</div>
+                    //     </div>
+                    // </ShowWhenOpen>
                     <h1>"Stiftung Jugendhilfe Aktiv"</h1>
                 </div>
             </div>
