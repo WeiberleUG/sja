@@ -2,7 +2,7 @@ use crate::database::structs::JsonAngebot;
 use leptos::prelude::*;
 use leptos_router::components::A;
 
-#[component]
+#[island]
 pub fn ShowOffer(offer: JsonAngebot) -> impl IntoView {
     view! {
         <tr>
@@ -13,8 +13,7 @@ pub fn ShowOffer(offer: JsonAngebot) -> impl IntoView {
                     .into_iter()
                     .map(|link| {
                         view! {
-                            <a href=link.link.clone()>{link.link.clone()}</a>
-                            <br />
+                            <A href=link.link.clone()>{link.link.clone()}</A>
                             <br />
                         }
                     })
@@ -44,7 +43,6 @@ pub fn ShowOffer(offer: JsonAngebot) -> impl IntoView {
                     .map(|adress| {
                         view! {
                             {adress.stadtteil}
-                            <br />
                             <br />
                         }
                     })

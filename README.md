@@ -1,5 +1,5 @@
-[![Build Rust project](https://github.com/Weiberle17/sja/actions/workflows/compile.yml/badge.svg)](https://github.com/Weiberle17/sja/actions/workflows/compile.yml)
-[![Dependency status](https://deps.rs/repo/github/Weiberle17/sja/status.svg)](https://deps.rs/repo/github/Weiberle17/sja)
+[![Build Rust project](https://github.com/WeiberleUG/sja/actions/workflows/compile.yml/badge.svg)](https://github.com/WeiberleUG/sja/actions/workflows/compile.yml)
+[![Dependency status](https://deps.rs/repo/github/WeiberleUG/sja/status.svg)](https://deps.rs/repo/github/WeiberleUG/sja)
 
 # SJA Webapp
 

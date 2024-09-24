@@ -1,7 +1,7 @@
 use leptos::prelude::*;
 use leptos_router::components::A;
 
-#[component]
+#[island]
 pub fn Header() -> impl IntoView {
     provide_context(RwSignal::new(false));
     let links = RwSignal::new(vec![
@@ -40,13 +40,13 @@ pub fn Header() -> impl IntoView {
                         </ShowWhenOpen>
                         <div>
                             <div class="header-div-7">
-                                <a href="https://github.com/Weiberle17/sja">
+                                <A href="https://github.com/Weiberle17/sja">
                                     <img
                                         class="header-img"
                                         src="/images/github-mark.svg"
                                         alt="GitHub"
                                     />
-                                </a>
+                                </A>
                                 <HamburgerMenuToggle />
                             </div>
                         </div>
