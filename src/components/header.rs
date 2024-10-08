@@ -34,9 +34,9 @@ pub fn Header() -> impl IntoView {
                             <img src="/images/sja_big.png" class="home-image" alt="Home" />
                         </A>
                         // <ShowWhenOpen is=false>
-                            <div class="header-div-5">
-                                <div class="header-div-6">{link_view}</div>
-                            </div>
+                        <div class="header-div-5">
+                            <div class="header-div-6">{link_view}</div>
+                        </div>
                         // </ShowWhenOpen>
                         <div>
                             <div class="header-div-7">
@@ -52,9 +52,9 @@ pub fn Header() -> impl IntoView {
                         </div>
                     </div>
                     // <ShowWhenOpen is=true>
-                    //     <div class="header-div-8">
-                    //         <div class="header-div-9">{link_view}</div>
-                    //     </div>
+                    // <div class="header-div-8">
+                    // <div class="header-div-9">{link_view}</div>
+                    // </div>
                     // </ShowWhenOpen>
                     <h1>"Stiftung Jugendhilfe Aktiv"</h1>
                 </div>
