@@ -6,7 +6,7 @@ use leptos::prelude::*;
 
 #[component]
 pub fn OutdatedPage() -> impl IntoView {
-    let offers = Resource::new(|| (), move |_| services::get_outdated());
+    let offers = Resource::new(|| (), move |_| services::get_offers::get_outdated());
 
     view! {
         <Header />

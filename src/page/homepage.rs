@@ -6,7 +6,7 @@ use leptos::prelude::*;
 
 #[component]
 pub fn HomePage() -> impl IntoView {
-    let offers = Resource::new(|| (), move |_| services::get_offers());
+    let offers = Resource::new(|| (), move |_| services::get_offers::get_offers());
 
     view! {
         <Header />
