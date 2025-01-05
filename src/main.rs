@@ -7,10 +7,13 @@ async fn main() {
     use leptos::{logging::log, prelude::*};
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use sja::app::*;
+    use sja::database::services::database::migrations;
 
     dotenvy::dotenv().expect("Error loading dotenv");
     simple_logger::init_with_level(log::Level::Debug).expect("couldn't initialize logging");
     console_error_panic_hook::set_once();
+
+    migrations().await.unwrap();
 
     let conf = get_configuration(None).unwrap();
     let addr = conf.leptos_options.site_addr;
