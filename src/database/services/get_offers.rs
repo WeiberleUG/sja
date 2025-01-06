@@ -289,7 +289,7 @@ async fn select_angebote_for_organisation(
           angebot.*
         FROM
           angebot
-        join organisation on organisation.organisation_id = angebot.organisation_id
+          JOIN organisation ON organisation.organisation_id = angebot.organisation_id
         WHERE
           angebot.organisation_id = $1;"#,
         organisation_id
@@ -311,7 +311,7 @@ async fn select_emails_for_apartner(ansprechpartner_id: Uuid) -> Result<Vec<Emai
           email
           JOIN apartner_email ON apartner_email.email_id = email.email_id
         WHERE
-            apartner_email.ansprechpartner_id = $1;"#,
+          apartner_email.ansprechpartner_id = $1;"#,
         ansprechpartner_id
     )
     .fetch_all(&pool)
