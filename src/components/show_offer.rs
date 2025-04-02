@@ -3,7 +3,7 @@ use leptos::prelude::*;
 use leptos_router::components::A;
 
 #[island]
-pub fn ShowOffer(offer: JsonAngebot) -> impl IntoView {
+pub fn ShowOffer(offer: JsonAngebot, hidden: bool) -> impl IntoView {
     view! {
         <tr>
             <td>{offer.angebot.angebot_name}</td>

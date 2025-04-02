@@ -1,47 +1,39 @@
 use crate::{components::show_offer::ShowOffer, database::structs::JsonAngebot};
 use leptos::prelude::*;
 
-#[derive(Debug)]
-pub enum SelectedPage {
-    Default,
-    Outdated,
-}
-
 #[component]
-pub fn OfferTable(offers: Resource<Result<Vec<JsonAngebot>, ServerFnError>>) -> impl IntoView {
+pub fn OfferTable(filter: RwSignal<Vec<(JsonAngebot, bool)>>) -> impl IntoView {
     let offer_view = move || {
-        offers.with(move |x| {
-            x.clone().map(move |res| {
-                view! {
-                    <div class="table-container">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Link</th>
-                                    <th>Beschreibung</th>
-                                    <th>Adresse</th>
-                                    <th>Stadtteil</th>
-                                    <th>Ansprechpartner</th>
-                                    <th>Email</th>
-                                    <th>Telefonnummer</th>
-                                    <th>Sonstiges</th>
-                                </tr>
-                                <For
-                                    each=move || {
-                                        res.clone().unwrap_or_default().into_iter().enumerate()
-                                    }
-                                    key=|(i, _)| *i
-                                    children=move |(_, offer): (usize, JsonAngebot)| {
-                                        view! { <ShowOffer offer /> }
-                                    }
-                                />
-                            </tbody>
-                        </table>
-                    </div>
-                }
-            })
-        })
+        view! {
+            <div class="table-container">
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Link</th>
+                            <th>Beschreibung</th>
+                            <th>Adresse</th>
+                            <th>Stadtteil</th>
+                            <th>Ansprechpartner</th>
+                            <th>Email</th>
+                            <th>Telefonnummer</th>
+                            <th>Sonstiges</th>
+                        </tr>
+                        <For
+                            each=move || { filter.get().into_iter().enumerate() }
+                            key=|(i, _)| *i
+                            children=move |(_, (offer, hidden)): (usize, (JsonAngebot, bool))| {
+                                if hidden {
+                                    view! {}.into_any()
+                                } else {
+                                    view! { <ShowOffer offer=offer hidden=hidden /> }.into_any()
+                                }
+                            }
+                        />
+                    </tbody>
+                </table>
+            </div>
+        }
     };
 
     view! {
