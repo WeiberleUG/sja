@@ -1,0 +1,43 @@
+name: Rust CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: test_admin
+          POSTGRES_PASSWORD: adminpassword
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test_user"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: 🛎️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🦀 Install Rust
+        uses: dtolnay/rust-toolchain@nightly
+
+      - name: 🚀 Install SQLx CLI (Optional, for `sqlx migrate run`)
+        run: cargo install sqlx-cli --no-default-features --features postgres
+
+      - name: 🏗️ Set up database URL
+        run: echo "DATABASE_URL=postgresql://test_admin:adminpassword@localhost:5432/test_db" >> $GITHUB_ENV
+
+      - name: 🔄 Run migrations
+        run: sqlx migrate run
+
+      - name: 🧪 Run tests
+        run: cargo test
