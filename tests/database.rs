@@ -10,7 +10,7 @@ fn env() {
     dotenvy::from_path_override("./.env.test").unwrap();
     assert_eq!(
         env::var("DATABASE_URL").unwrap(),
-        "postgresql://test_admin:adminpassword@localhost:5432/"
+        "postgresql://test_admin:adminpassword@localhost:5432/testdb2"
     );
 }
 
@@ -48,7 +48,7 @@ async fn migration(pool: PgPool) -> sqlx::Result<()> {
     Ok(())
 }
 
-#[sqlx::test]
+#[sqlx::test(migrations = "./migrations")]
 async fn organisation(pool: PgPool) -> sqlx::Result<()> {
     let orga: Organisation = Organisation {
         organisation_id: Uuid::new_v4(),
@@ -72,7 +72,7 @@ async fn organisation(pool: PgPool) -> sqlx::Result<()> {
     Ok(())
 }
 
-#[sqlx::test]
+#[sqlx::test(migrations = "./migrations")]
 async fn angebot(pool: PgPool) -> sqlx::Result<()> {
     let orga: Organisation = Organisation {
         organisation_id: Uuid::new_v4(),

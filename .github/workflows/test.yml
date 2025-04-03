@@ -1,4 +1,4 @@
-name: Rust CI
+name: Test Rust project
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 🦀 Install Rust
-        uses: dtolnay/rust-toolchain@nightly
+        uses: dtolnay/rust-toolchain@1.85-nightly
 
       - name: 🚀 Install SQLx CLI (Optional, for `sqlx migrate run`)
         run: cargo install sqlx-cli --no-default-features --features postgres
