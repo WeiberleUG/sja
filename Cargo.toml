@@ -15,7 +15,7 @@ cfg-if = "1.0.0"
 chrono = { version = "0.4.38", features = ["serde", "wasmbind", "js-sys"], optional = false }
 console_error_panic_hook = "0.1"
 dotenvy = { version = "0.15.7", optional = true }
-getrandom = { version = "0.2.15", features = ["js"] }
+getrandom = { version = "0.2.16", features = ["js"] }
 http = "1"
 leptos = { version = "0.7.0-beta5", features = ["nightly", "experimental-islands"] }
 leptos_axum = { version = "0.7.0-beta5", optional = true }
