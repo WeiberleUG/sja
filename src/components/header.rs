@@ -74,7 +74,7 @@ fn HamburgerMenuToggle() -> impl IntoView {
         }>
             <img
                 class="hamburger-menu"
-                src=move || match hamburger_menu_open() {
+                src=move || match hamburger_menu_open.get() {
                     true => "/images/x_close-black.png",
                     false => "/images/mobile_menu-black.png",
                 }
@@ -90,7 +90,7 @@ fn ShowWhenOpen(is: bool, children: Children) -> impl IntoView {
 
     view! {
         <div style=move || {
-            if hamburger_menu_open() == is { "display: contents" } else { "display: none" }
+            if hamburger_menu_open.get() == is { "display: contents" } else { "display: none" }
         }>{children()}</div>
     }
 }

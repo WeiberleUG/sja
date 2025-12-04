@@ -1,18 +1,13 @@
 #[cfg(not(feature = "ssr"))]
-use chrono::{DateTime, Local};
+use chrono::{Local, NaiveDateTime};
 use serde::{Deserialize, Serialize};
 #[cfg(feature = "ssr")]
-use sqlx::types::{
-    chrono::{DateTime, Local},
-    Uuid,
-};
-#[cfg(not(feature = "ssr"))]
-use uuid::Uuid;
+use sqlx::types::chrono::{Local, NaiveDateTime};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Adresse {
-    pub adresse_id: Uuid,
+    pub adresse_id: i64,
     pub plz: String,
     pub strasse: String,
     pub hausnr: String,
@@ -22,7 +17,7 @@ pub struct Adresse {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Organisation {
-    pub organisation_id: Uuid,
+    pub organisation_id: i64,
     pub organisation_name: String,
 }
 
@@ -39,14 +34,14 @@ pub struct JsonOrganisation {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Email {
-    pub email_id: Uuid,
+    pub email_id: i64,
     pub email_address: String,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Telefonnummer {
-    pub telefonnummer_id: Uuid,
+    pub telefonnummer_id: i64,
     pub land_vorwahl: String,
     pub lokale_nummer: String,
     pub festnetz: bool,
@@ -56,20 +51,20 @@ pub struct Telefonnummer {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Link {
-    pub link_id: Uuid,
+    pub link_id: i64,
     pub link: String,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Angebot {
-    pub angebot_id: Uuid,
+    pub angebot_id: i64,
     pub angebot_name: String,
     pub beschreibung: Option<String>,
     pub kategorie: String,
-    pub organisation_id: Uuid,
-    pub created: DateTime<Local>,
-    pub last_modified: DateTime<Local>,
+    pub organisation_id: i64,
+    pub created: NaiveDateTime,
+    pub last_modified: NaiveDateTime,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -86,15 +81,15 @@ pub struct JsonAngebot {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Sonstiges {
-    pub sonstiges_id: Uuid,
+    pub sonstiges_id: i64,
     pub text: String,
-    pub angebot_id: Uuid,
+    pub angebot_id: i64,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(sqlx::FromRow))]
 pub struct Ansprechpartner {
-    pub ansprechpartner_id: Uuid,
+    pub ansprechpartner_id: i64,
     pub nach_name: String,
     pub vor_name: String,
 }

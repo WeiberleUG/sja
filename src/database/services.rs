@@ -6,16 +6,25 @@ use crate::database::structs::{
 use cfg_if::cfg_if;
 use leptos::*;
 #[cfg(feature = "ssr")]
-use sqlx::{Pool, Postgres};
+use sqlx::{migrate::MigrateDatabase, Pool, Sqlite};
 use std::env;
-use uuid::Uuid;
 
 cfg_if! {
     if #[cfg(feature = "ssr")] {
-        pub async fn db() -> Result<Pool<Postgres>, ServerFnError> {
+        pub async fn db() -> Result<Pool<Sqlite>, ServerFnError> {
             let database_url: String = env::var("DATABASE_URL").expect("DATABASE_URL should be set");
 
-            sqlx::postgres::PgPool::connect(&database_url)
+            if !Sqlite::database_exists(&database_url).await.unwrap_or(false) {
+                println!("Creating database {}", &database_url);
+                match Sqlite::create_database(&database_url).await {
+                    Ok(_) => println!("Create db success"),
+                    Err(error) => panic!("error: {}", error),
+                }
+            } else {
+                println!("Database already exists");
+            }
+
+            sqlx::sqlite::SqlitePool::connect(&database_url)
                 .await.map_err(|e| ServerFnError::ServerError(e.to_string()))
         }
 
@@ -41,7 +50,7 @@ pub async fn get_offers() -> Result<Vec<JsonAngebot>, ServerFnError> {
         FROM
           angebot
         WHERE
-          last_modified > NOW() - INTERVAL '3 months';"#
+          last_modified > DATE('now', '-3 month');"#
     )
     .fetch_all(&pool)
     .await?;
@@ -78,7 +87,7 @@ pub async fn get_outdated() -> Result<Vec<JsonAngebot>, ServerFnError> {
         FROM
           angebot
         WHERE
-          last_modified < NOW() - INTERVAL '3 months';"#
+          last_modified < DATE('now', '-3 month');"#
     )
     .fetch_all(&pool)
     .await?;
@@ -106,7 +115,7 @@ pub async fn get_outdated() -> Result<Vec<JsonAngebot>, ServerFnError> {
 
 #[server]
 async fn select_organisation_for_angebot(
-    organisation_id: Uuid,
+    organisation_id: i64,
 ) -> Result<JsonOrganisation, ServerFnError> {
     let pool = db().await?;
     let organisation = sqlx::query_as!(
@@ -138,7 +147,7 @@ async fn select_organisation_for_angebot(
 }
 
 #[server]
-async fn select_adressen_for_angebot(angebot_id: Uuid) -> Result<Vec<Adresse>, ServerFnError> {
+async fn select_adressen_for_angebot(angebot_id: i64) -> Result<Vec<Adresse>, ServerFnError> {
     let pool = db().await?;
     sqlx::query_as!(
         Adresse,
@@ -158,7 +167,7 @@ async fn select_adressen_for_angebot(angebot_id: Uuid) -> Result<Vec<Adresse>, S
 }
 
 #[server]
-async fn select_links_for_angebot(angebot_id: Uuid) -> Result<Vec<Link>, ServerFnError> {
+async fn select_links_for_angebot(angebot_id: i64) -> Result<Vec<Link>, ServerFnError> {
     let pool = db().await?;
     sqlx::query_as!(
         Link,
@@ -179,7 +188,7 @@ async fn select_links_for_angebot(angebot_id: Uuid) -> Result<Vec<Link>, ServerF
 
 #[server]
 async fn select_apartner_for_angebot(
-    angebot_id: Uuid,
+    angebot_id: i64,
 ) -> Result<Vec<JsonAnsprechpartner>, ServerFnError> {
     let pool = db().await?;
     let apartners = sqlx::query_as!(
@@ -214,7 +223,7 @@ async fn select_apartner_for_angebot(
 }
 
 #[server]
-async fn select_sonstiges_for_angebot(angebot_id: Uuid) -> Result<Vec<Sonstiges>, ServerFnError> {
+async fn select_sonstiges_for_angebot(angebot_id: i64) -> Result<Vec<Sonstiges>, ServerFnError> {
     let pool = db().await?;
     sqlx::query_as!(
         Sonstiges,
@@ -235,7 +244,7 @@ async fn select_sonstiges_for_angebot(angebot_id: Uuid) -> Result<Vec<Sonstiges>
 
 #[server]
 async fn select_adressen_for_organisation(
-    organisation_id: Uuid,
+    organisation_id: i64,
 ) -> Result<Vec<Adresse>, ServerFnError> {
     let pool = db().await?;
     sqlx::query_as!(
@@ -256,7 +265,7 @@ async fn select_adressen_for_organisation(
 }
 
 #[server]
-async fn select_links_for_organisation(organisation_id: Uuid) -> Result<Vec<Link>, ServerFnError> {
+async fn select_links_for_organisation(organisation_id: i64) -> Result<Vec<Link>, ServerFnError> {
     let pool = db().await?;
     sqlx::query_as!(
         Link,
@@ -277,7 +286,7 @@ async fn select_links_for_organisation(organisation_id: Uuid) -> Result<Vec<Link
 
 #[server]
 async fn select_apartner_for_organisation(
-    organisation_id: Uuid,
+    organisation_id: i64,
 ) -> Result<Vec<Ansprechpartner>, ServerFnError> {
     let pool = db().await?;
     sqlx::query_as!(
@@ -299,7 +308,7 @@ async fn select_apartner_for_organisation(
 
 #[server]
 async fn select_angebote_for_organisation(
-    organisation_id: Uuid,
+    organisation_id: i64,
 ) -> Result<Vec<Angebot>, ServerFnError> {
     let pool = db().await?;
     sqlx::query_as!(
@@ -320,7 +329,7 @@ async fn select_angebote_for_organisation(
 }
 
 #[server]
-async fn select_emails_for_apartner(ansprechpartner_id: Uuid) -> Result<Vec<Email>, ServerFnError> {
+async fn select_emails_for_apartner(ansprechpartner_id: i64) -> Result<Vec<Email>, ServerFnError> {
     let pool = db().await?;
     sqlx::query_as!(
         Email,
@@ -341,7 +350,7 @@ async fn select_emails_for_apartner(ansprechpartner_id: Uuid) -> Result<Vec<Emai
 
 #[server]
 async fn select_telefonnummern_for_apartner(
-    ansprechpartner_id: Uuid,
+    ansprechpartner_id: i64,
 ) -> Result<Vec<Telefonnummer>, ServerFnError> {
     let pool = db().await?;
     sqlx::query_as!(
